@@ -10,6 +10,7 @@ const clearBtn = document.getElementById('clearBtn');
 let currentMode = 'black';
 let customColor = '#000000';
 let isDrawing = false;
+let baseHue = Math.floor(Math.random() * 360);
 
 // generate a random RGB color
 function getRandomColor() {
@@ -21,28 +22,43 @@ function getRandomColor() {
 }
 
 // Get one colour shades
-let baseHue = Math.floor(Math.random() * 360);
-
 function getRandomShade() {
     const lightness = Math.floor(Math.random() * 40) + 40;
     return `hsl(${baseHue}, 80%, ${lightness}%)`;
 }
 
-// track drawing state
-container.addEventListener('mousedown', () => isDrawing = true);
-container.addEventListener('mouseup', () => isDrawing = false);
-container.addEventListener('mouseleave', () => isDrawing = false);
+function paintSquare(square) {
+    switch (currentMode) {
+        case 'eraser':
+            square.style.backgroundColor = 'white';
+            break;
+        case 'black':
+            square.style.backgroundColor = 'black';
+            break;
+        case 'random':
+            square.style.backgroundColor = getRandomColor();
+            break;
+        case 'oneColor':
+            square.style.backgroundColor = getRandomShade();
+            break;
+        case 'customColor':
+            square.style.backgroundColor = customColor;
+            break;
+    }
+}
+
+document.addEventListener('mousedown', () => isDrawing = true);
+document.addEventListener('mouseup', () => isDrawing = false);
 
 // Create grid dynamically
 function createGrid(size) {
     container.innerHTML = '';
     const totalSquares = size * size;
+    const percent = 100 / size;
 
     for (let i = 0; i < totalSquares; i++) {
         const square = document.createElement('div');
         square.classList.add("grid-square");
-
-        const percent = 100 / size;
         square.style.flexBasis = `${percent}%`;
 
         square.addEventListener('mousedown', () => paintSquare(square));
@@ -54,64 +70,62 @@ function createGrid(size) {
     }
 }
 
-function paintSquare(square) {
-    if (currentMode === 'eraser') {
-        square.style.backgroundColor = 'white';
-    } else if (currentMode === 'black') {
-        square.style.backgroundColor = 'black';
-    } else if (currentMode === 'random') {
-        square.style.backgroundColor = getRandomColor();
-    } else if (currentMode === 'oneColor') {
-        square.style.backgroundColor = getRandomShade();
-    } else if (currentMode === 'customColor') {
-        square.style.backgroundColor = customColor;
-    }
+// Button mode toggle : active style
+function setActiveButton(activeBtn) {
+    const colorButtons = [blackBtn, randomBtn, oneColorBtn, eraserBtn, clearBtn];
+    colorButtons.forEach(btn => btn.classList.toggle('active', btn === activeBtn));
 }
 
-// Button event listeners
-blackBtn.addEventListener('click', () => currentMode = 'black');
+// Event listeners
+blackBtn.addEventListener('click', () => {
+    currentMode = 'black';
+    setActiveButton(blackBtn);
+});
 
-randomBtn.addEventListener('click', () => currentMode = 'random');
+randomBtn.addEventListener('click', () => {
+    currentMode = 'random';
+    setActiveButton(randomBtn);
+});
 
 oneColorBtn.addEventListener('click', () => {
     baseHue = Math.floor(Math.random() * 360);
     currentMode = 'oneColor';
+    setActiveButton(oneColorBtn);
 });
 
 colorPicker.addEventListener('input', (e) => {
   customColor = e.target.value;
   currentMode = 'customColor';
+  colorPicker.style.backgroundColor = customColor;
+  setActiveButton(null);
 });
 
-eraserBtn.addEventListener('click', () => currentMode = 'eraser');
+eraserBtn.addEventListener('click', () => {
+    currentMode = 'eraser';
+    setActiveButton(eraserBtn);
+});
 
 clearBtn.addEventListener('click', () => {
     const squaresToClear = document.querySelectorAll('.grid-square');
     squaresToClear.forEach(square => {
         square.style.backgroundColor = 'white';
     });
+    setActiveButton(clearBtn);
 });
 
 resetBtn.addEventListener('click', () => {
     let input = prompt("Enter a new grid size (max 100):");
-
-    if (input === null || input.trim() === "") {
-        createGrid(16);
-        return;
+    let size = parseInt(input);
+    if(!size || size < 1 || size > 100) {
+        size = 16;
     }
-    let newSize = parseInt(input);
+    createGrid(size);
 
-    while (isNaN(newSize) || newSize > 100 || newSize <=0 ) {
-        input = prompt("Invalis input. Enter a number between 1 and 100 (or leave blank for default):");
-
-        if (input === null || input.trim() === "") {
-        createGrid(16);
-        return; 
-    }
-    newSize = parseInt(input);
-    }
-    createGrid(newSize);
-})
+    currentMode = 'black';
+    setActiveButton(blackBtn);
+    colorPicker.style.backgroundColor = '#000000';
+});
 
 // Initial 16 x 16 grid
 createGrid(16);
+setActiveButton(blackBtn);
