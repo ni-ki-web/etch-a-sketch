@@ -4,7 +4,7 @@ A simple browser-based Etch-a-Sketch application built using **HTML**, **CSS**, 
 
 Users can draw on a grid by clicking and dragging their mouse. Several coloring modes are supported, including black, random colors, gradient shades, and a custom color picker. The grid can be cleared entirely or selectively using an eraser. Users can also adjust the grid size dynamically.
 
----
+
 
 ## Features
 - Fixed-size canvas
@@ -20,13 +20,13 @@ Users can draw on a grid by clicking and dragging their mouse. Several coloring 
 - Responsive design
 - Styled with custom colors and hover effects
 
----
+
 
 ## Preview
 
 ![Etch-a-Sketch Screenshot](./assets/etch-a-sketch.jpeg)
 
----
+
 
 ## Technologies Used
 - HTML
@@ -35,7 +35,7 @@ _ Vanilla JavaScript
 
 > _This project intentionally avoids CSS Grid to focus on mastering Flexbox._
 
----
+
 
 ## Future Improvements
 - Add custom brush and eraser icons as cursors
@@ -44,8 +44,8 @@ _ Vanilla JavaScript
 - Option to save the drawing as an image or preserve progress
 - Save custom colors or maintain sketch color history
 
----
+
 
 ## Live Demo
 *Want to create a sketch? Try it out!*
-[Live Site]() <- _Add link here once deployed_
+[Live Site](https://ni-ki-web.github.io/etch-a-sketch/)
