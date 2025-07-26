@@ -13,16 +13,19 @@
     <h1>Etch-A-Sketch</h1>
 
     <div class="button-control">
-        <input type="color" id="colorPicker" title="Pick a color" />
+        <div class="color-picker-wrapper">
+            <input type="color" id="colorPicker" title="Pick a color" />
+            <p>Custom Color</p>
+        </div>
         <button id="blackBtn">Black</button>
         <button id="randomBtn">Random Color</button>
-        <button id="oneColorBtn">Random Color Shade</button>
+        <button id="oneColorBtn">Color Gradient</button>
         <button id="resetBtn">Change Grid Size</button>
         <button id="eraserBtn">Eraser</button>
         <button id="clearBtn">Clear Grid</button>
     </div>
 
-    <div class="container" id="container"></div>
+    <div id="container"></div>
 
     <script src="script.js"></script>
 </body>
